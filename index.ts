@@ -24,7 +24,6 @@ app.post('/solution', multer({
   },
 }).single('file'), (req, res) => {
   // We wanna get file path, then use that path to modify
-
   transcodeAudio(req.file.path);
   transcribeAudio(req.file.path).then((response) => {
     const transcript = response[0].results.map(
