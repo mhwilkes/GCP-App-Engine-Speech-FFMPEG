@@ -6,7 +6,8 @@
   "author": "Mike <mhwilkes@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "deploy": "gcloud app deploy app.yaml"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
