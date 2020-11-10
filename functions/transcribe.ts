@@ -16,7 +16,7 @@ const targetAudioConfig = {
     languageCode: LANGUAGE,
 }
 
-const convertToText = (file, config) => {
+const transcribeAudio = (file, config) => {
     console.log('FILE:', JSON.stringify(file))
 
     const audio = {
@@ -38,4 +38,4 @@ const convertToText = (file, config) => {
         console.log('SPEECH error:', error)
     })
 }
-module.exports = convertToText
+module.exports = transcribeAudio
