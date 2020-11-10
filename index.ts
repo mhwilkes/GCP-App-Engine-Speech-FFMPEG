@@ -26,7 +26,7 @@ app.get('/', (_req, res) => {
 })
 
 app.post('/transcode', multer.single('file'), (req, res) => {
-    fs.readSync()
+    fs.readSync(req.file)
     transcodeAudio()
     transcribeAudio(req.file).then((response) => {
         const transcript = response[0].results.map(
