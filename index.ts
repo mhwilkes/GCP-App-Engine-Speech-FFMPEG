@@ -26,8 +26,9 @@ app.get('/', (_req, res) => {
 })
 
 app.post('/transcode', multer.single('file'), (req, res) => {
+    // We wanna get file path, then use that path to modify
     fs.readSync(req.file)
-    transcodeAudio()
+    transcodeAudio(req.file.path)
     transcribeAudio(req.file).then((response) => {
         const transcript = response[0].results.map(
             result => result.alternatives[0].transcript).join('\n')

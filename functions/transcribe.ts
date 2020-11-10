@@ -1,9 +1,5 @@
-const path = require('path')
-const os = require('os')
 const fs = require('fs')
-const { promisify } = require('util')
-
-
+const {promisify} = require('util')
 const Speech = require('@google-cloud/speech')
 
 const ENCODING = 'OPUS_OGG' // was 'LINEAR16'
@@ -18,18 +14,14 @@ const targetAudioConfig = {
 
 const transcribeAudio = (file, config) => {
     console.log('FILE:', JSON.stringify(file))
-
     const audio = {
         content: fs.readFileSync(file).toString('base64'),
     }
-
     console.log(audio.content)
-
     const request = {
         config,
         audio,
     }
-
     const speech = new Speech.SpeechClient()
 
     return speech.recognize(request).then((response) => {

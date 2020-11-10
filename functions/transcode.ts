@@ -4,11 +4,11 @@ const { promisify } = require('util')
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-const transcodeAudio = (audio) => {
+const transcodeAudio = (path) => {
 
 // Transcode
     ffmpeg()
-        .input(audio)
+        .input(path)
         .outputOptions('-c:v copy') // Change these options to whatever suits your needs
         .outputOptions('-c:a aac')
         .outputOptions('-b:a 160k')
@@ -27,7 +27,7 @@ const transcodeAudio = (audio) => {
             console.error('stdout:', stdout);
             console.error('stderr:', stderr);
         })
-        .pipe(audio, {end: true}); // end: true, emit end event when readable stream ends
+        .pipe(path, {end: true}); // end: true, emit end event when readable stream ends
 }
 
 module.exports = transcodeAudio

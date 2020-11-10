@@ -4,6 +4,8 @@
     "module": "commonjs"
   },
   "include": [
-    "*.ts"
+    "*.ts",
+    "/functions/transcode.ts",
+    "/functions/transcribe.ts"
   ]
 }
