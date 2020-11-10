@@ -1,5 +1,3 @@
-service: ffmpeg-speech
-
 runtime: custom
 env: flex
 
