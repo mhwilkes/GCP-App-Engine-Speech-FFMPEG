@@ -6,12 +6,12 @@ import * as cors from 'cors';
 import transcodeAudio from './functions/transcode';
 import transcribeAudio from './functions/transcribe';
 
-const PORT = Number(process.env.PORT) || 8085;
+const PORT = Number(process.env.PORT) || 8080;
 
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors);
+app.use(cors());
 
 app.get('/', (_req, res) => {
   res.send('🎉 Hello TypeScript! 🎉');
@@ -34,8 +34,7 @@ app.post('/solution', multer({
   });
 });
 
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
+  console.log(`Start app at http://localhost:${PORT}`);
 });
-
-module.exports = server;
