@@ -18,17 +18,14 @@ const bufferToReadableStream = (buffer: Buffer) => {
 
 const writeableStreamToBuffer = (inStream: Writable) => {
   // const outStream = new Readable();
-
   var data = [];
 
   inStream._write = function(chunk) {
     data.push(chunk);
   }
 
-  inStream.on('end', function() {
-    var buffer = Buffer.concat(data);
-    return buffer;
-  })
+  var buffer = Buffer.concat(data);
+  return buffer;
 };
 
 const PORT = Number(process.env.PORT) || 8080;
