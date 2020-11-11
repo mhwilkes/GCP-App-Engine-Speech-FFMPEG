@@ -11,6 +11,7 @@ const transcodeAudioStream = (audioStreamIn: stream.Readable): stream.Writable =
   ffmpeg(audioStreamIn)
     .setFfmpegPath(ffmpegPath)
     .outputOptions(
+      '-f', 'ogg', 
       '-ac', '1', 
       '-acodec', 'libopus', 
       '-b:a', '128k', 
