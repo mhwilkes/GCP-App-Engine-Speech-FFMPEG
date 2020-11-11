@@ -10,10 +10,12 @@ const transcodeAudioStream = (audioStreamIn: stream.Readable): stream.Writable =
   // Transcode
   ffmpeg(audioStreamIn)
     .setFfmpegPath(ffmpegPath)
-    .audioChannels(1)
-    .audioCodec('libopus')
-    .audioBitrate(128)
-    .audioFrequency(48000)
+    .outputOptions(
+      '-ac', '1', 
+      '-acodec', 'libopus', 
+      '-b:a', '128k', 
+      '-ar', '48000'
+    )
     .on('start', (cmdLine) => {
       console.log('Started ffmpeg with command:', cmdLine);
     })
