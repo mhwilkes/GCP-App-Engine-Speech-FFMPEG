@@ -4,9 +4,10 @@ import * as multer from 'multer';
 import * as cors from 'cors';
 import concatStream from 'concat-stream';
 
-import { Readable, Writable } from 'stream';
+import { Readable, Stream, Writable } from 'stream';
 import transcodeAudioStream from './functions/transcode';
 import transcribeAudioStream from './functions/transcribe';
+import { doesNotMatch } from 'assert';
 
 const bufferToReadableStream = (buffer: Buffer) => {
   const stream = new Readable();
@@ -16,7 +17,18 @@ const bufferToReadableStream = (buffer: Buffer) => {
 };
 
 const writeableStreamToBuffer = (inStream: Writable) => {
-  const outStream = new Readable();
+  // const outStream = new Readable();
+
+  var data = [];
+
+  inStream._write = function(chunk) {
+    data.push(chunk);
+  }
+
+  inStream.on('end', function() {
+    var buffer = Buffer.concat(data);
+    return buffer;
+  })
 };
 
 const PORT = Number(process.env.PORT) || 8080;
