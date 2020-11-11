@@ -1,14 +1,15 @@
-import ffmpeg from 'fluent-ffmpeg';
-
-import ffmpegInstaller = require('@ffmpeg-installer/ffmpeg')
+import * as ffmpeg from 'fluent-ffmpeg';
+import * as ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
+import * as stream from 'stream';
 
 const ffmpegPath = ffmpegInstaller.path;
 
-const transcodeAudio = (audioPath: string) => {
+const transcodeAudioStream = (audioStreamIn: stream.Readable): stream.Writable => {
+  const audioStreamOut = new stream.Writable();
+
   // Transcode
-  ffmpeg()
+  ffmpeg(audioStreamIn)
     .setFfmpegPath(ffmpegPath)
-    .input(audioPath)
     .audioChannels(1)
     .audioCodec('libopus')
     .audioBitrate(128)
@@ -24,6 +25,7 @@ const transcodeAudio = (audioPath: string) => {
       console.error('stdout:', stdout);
       console.error('stderr:', stderr);
     })
-    .output('tmp/tp.ogg', { end: true }); // end: true, emit end event when readable stream ends
+    .output(audioStreamOut, { end: true });
+  return audioStreamOut;
 };
-export default transcodeAudio;
+export default transcodeAudioStream;
