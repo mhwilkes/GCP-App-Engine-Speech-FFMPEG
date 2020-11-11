@@ -22,7 +22,7 @@ const transcribeAudioStream = (base64Data : string) => {
   const speech = new Speech.SpeechClient();
 
   return speech.recognize(request).then((response) => response).catch((error) => {
-    console.log('SPEECH error:', error.config.url);
+    console.log('SPEECH error:', error);
   });
 };
 

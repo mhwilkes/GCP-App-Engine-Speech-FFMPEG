@@ -2,12 +2,10 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as multer from 'multer';
 import * as cors from 'cors';
-import concatStream from 'concat-stream';
 
-import { Readable, Stream, Writable } from 'stream';
+import { Readable, Writable } from 'stream';
 import transcodeAudioStream from './functions/transcode';
 import transcribeAudioStream from './functions/transcribe';
-import { doesNotMatch } from 'assert';
 
 const bufferToReadableStream = (buffer: Buffer) => {
   const stream = new Readable();
@@ -18,13 +16,13 @@ const bufferToReadableStream = (buffer: Buffer) => {
 
 const writeableStreamToBuffer = (inStream: Writable) => {
   // const outStream = new Readable();
-  var data = [];
+  const data = [];
 
-  inStream._write = function(chunk) {
+  inStream._write = function (chunk) {
     data.push(chunk);
-  }
+  };
 
-  var buffer = Buffer.concat(data);
+  const buffer = Buffer.concat(data);
   return buffer;
 };
 
