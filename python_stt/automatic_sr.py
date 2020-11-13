@@ -1,23 +1,39 @@
+import os
+
 import speech_recognition as sr
 import ffmpeg
 
-r = sr.Recognizer()
-filename = 'test.ogg'
+def convert_stt(filename):
+    recognizer = sr.Recognizer()
 
-new_filename = 'test.wav'
+    output_filename = '.'.join(filename.split('.')[:-1]) + '.wav'
 
-stream = ffmpeg.input(filename)
-stream = ffmpeg.output(stream, new_filename)
-ffmpeg.run(stream)
+    stream = ffmpeg.input(filename)
+    stream = ffmpeg.output(stream, output_filename)
+    ffmpeg.run(stream)
 
-with sr.AudioFile(new_filename) as source:
+    print("Successfully converted '{}' to '{}'.".format(filename, output_filename))
 
-    audio_text = r.listen(source)
+    with sr.AudioFile(output_filename) as source:
 
-    try:
-        text = r.recognize_google(audio_text)
-        print("Converting audio transcripts to text...")
-        print(text)
+        audio_text = recognizer.listen(source)
 
-    except:
-        print("Error. Try a different audio format or file")
+        try:
+            print("Converting audio to text")
+            transcription = recognizer.recognize_google(audio_text)
+            print('Transcription: "{}"'.format(transcription))
+
+            os.remove(filename)
+            os.remove(output_filename)
+
+            return transcription
+
+        except:
+            print("Error transcribing text.")
+
+    return None
+
+
+if __name__ == "__main__":
+
+    test = convert_stt("uploads/test.ogg")
