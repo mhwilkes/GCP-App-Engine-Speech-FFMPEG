@@ -1,34 +1,34 @@
 import * as ffmpeg from 'fluent-ffmpeg';
 import * as ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
-import * as stream from 'stream';
+import { Readable } from 'stream';
 
 const ffmpegPath = ffmpegInstaller.path;
 
-const transcodeAudioStream = (audioStreamIn: stream.Readable): stream.Writable => {
-  const audioStreamOut = new stream.Writable();
-
+const transcodeAudioStream = async (audioStreamIn: Readable):
+    Promise<void> => new Promise((resolve, reject) => {
   // Transcode
   ffmpeg(audioStreamIn)
     .setFfmpegPath(ffmpegPath)
     .outputOptions(
-      '-f', 'ogg', 
-      '-ac', '1', 
-      '-acodec', 'libopus', 
-      '-b:a', '128k', 
-      '-ar', '48000'
-    )
-    .on('start', (cmdLine) => {
+      '-f', 'ogg',
+      '-ac', '1',
+      '-acodec', 'libopus',
+      '-b:a', '128k',
+      '-ar', '48000',
+    ).on('start', (cmdLine) => {
       console.log('Started ffmpeg with command:', cmdLine);
     })
+    .on('progress', (progress) => {
+      console.log(`[ffmpeg] ${JSON.stringify(progress)}`);
+    })
+    .on('error', (err) => {
+      console.log(`[ffmpeg] error: ${err.message}`);
+      reject(err);
+    })
     .on('end', () => {
-      console.log('Successfully re-encoded audio.');
+      console.log('[ffmpeg] finished');
+      resolve();
     })
-    .on('error', (err, stdout, stderr) => {
-      console.error('An error occurred during encoding', err.message);
-      console.error('stdout:', stdout);
-      console.error('stderr:', stderr);
-    })
-    .output(audioStreamOut, { end: true });
-  return audioStreamOut;
-};
+    .save('test.ogg');
+});
 export default transcodeAudioStream;
