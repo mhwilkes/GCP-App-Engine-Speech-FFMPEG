@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as multer from 'multer';
 import * as cors from 'cors';
 import * as fs from 'fs';
-import { Readable, Writable } from 'stream';
+import { Readable } from 'stream';
 
 import transcodeAudioStream from './functions/transcode';
 import transcribeAudioStream from './functions/transcribe';
@@ -13,19 +13,6 @@ const bufferToReadableStream = (buffer: Buffer) => {
   stream.push(buffer);
   stream.push(null);
   return stream;
-};
-
-const writeableStreamToBuffer = (inStream: Writable) => {
-  // const outStream = new Readable();
-  const data = [];
-
-  inStream._write = (chunk) => {
-    data.push(chunk);
-  };
-
-  const buffer = Buffer.concat(data);
-  console.log(`Buffer ${buffer}`);
-  return buffer;
 };
 
 const PORT = Number(process.env.PORT) || 8080;
@@ -47,17 +34,13 @@ app.post('/solution', multer({
 }).single('file'), (req, res) => {
   const inStream = bufferToReadableStream(req.file.buffer);
 
-  let base64Data;
-
   transcodeAudioStream(inStream).then(() => {
-    const data = fs.readFileSync('test.ogg').toString('base64');
-    console.log(data);
+    const data = fs.readFileSync('./test.wav').toString('base64');
     transcribeAudioStream(data).then((response) => {
-      console.log(`BASE64 Starts here ${base64Data}`);
       const transcript = response[0].results.map(
         (result) => result.alternatives[0].transcript,
       ).join('\n');
-      fs.unlinkSync('test.ogg');
+      fs.unlinkSync('./test.wav');
       res.send({ transcript });
     });
   });

@@ -10,11 +10,11 @@ const transcodeAudioStream = async (audioStreamIn: Readable):
   ffmpeg(audioStreamIn)
     .setFfmpegPath(ffmpegPath)
     .outputOptions(
-      '-f', 'ogg',
+      '-f', 'wav',
       '-ac', '1',
-      '-acodec', 'libopus',
+      '-acodec', 'pcm_s16le',
       '-b:a', '128k',
-      '-ar', '48000',
+      '-ar', '16000',
     ).on('start', (cmdLine) => {
       console.log('Started ffmpeg with command:', cmdLine);
     })
@@ -29,6 +29,6 @@ const transcodeAudioStream = async (audioStreamIn: Readable):
       console.log('[ffmpeg] finished');
       resolve();
     })
-    .save('test.ogg');
+    .save('test.wav');
 });
 export default transcodeAudioStream;
