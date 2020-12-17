@@ -42,7 +42,7 @@ Code is done in TypeScript with strict typing. Currently, there is no scaling an
 Scaling would require a different file handling scheme, or 
 utilizing [cloud pubsub](https://cloud.google.com/pubsub/docs/overview) to create a worker for each job.
 
-###There are two portions to the transcription process:
+### There are two portions to the transcription process:
 * The transcoding portion: 
     * [transcode.ts](/functions/transcode.ts)     
 * The transcription portion:
