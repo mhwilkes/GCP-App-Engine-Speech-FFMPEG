@@ -1,6 +1,5 @@
 import * as Speech from '@google-cloud/speech';
 import { google } from '@google-cloud/speech/build/protos/protos';
-import * as protos from '@google-cloud/speech/build/protos/protos';
 import IRecognizeRequest = google.cloud.speech.v1.IRecognizeRequest;
 import IRecognitionConfig = google.cloud.speech.v1.IRecognitionConfig;
 import IRecognitionAudio = google.cloud.speech.v1.IRecognitionAudio;

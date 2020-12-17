@@ -36,8 +36,10 @@ app.get('/', (_req, res) => {
   res.send('🎉 Hello TypeScript! 🎉');
 });
 
-// Solution Endpoint for Transcription. Current upload limit is 5 MB but can be modified below
-// Multer is used to handle file upload parsing
+/*
+ Solution Endpoint for Transcription. Current upload limit is 5 MB but can be modified below Multer
+ is used to handle file upload parsing
+ */
 app.post('/solution', multer({
   // Storage of file is entirely within memory in form of Buffer
   storage: multer.memoryStorage(),
