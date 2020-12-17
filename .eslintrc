@@ -4,6 +4,10 @@
   "plugins": [
     "@typescript-eslint"
   ],
+  "rules": {
+    "sort-imports": "warn",
+    "no-console": "off"
+  },
   "extends": [
     "airbnb-base",
     "plugin:@typescript-eslint/eslint-recommended",
